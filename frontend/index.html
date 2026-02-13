@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerOS Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="particles-canvas"></canvas>
+    <!-- Landing Page -->
+    <div id="landing-page" class="page landing-container">
+        <div class="landing-content">
+            <h1 class="fade-in">CareerOS</h1>
+            <p class="fade-in delay-1">Your AI-powered path to your dream career.</p>
+            <button id="get-started-btn" class="btn-primary fade-in delay-2">Get Started <i
+                    class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Onboarding Page -->
+    <div id="onboarding-page" class="page onboarding-container" style="display: none;">
+        <div class="onboarding-card fade-in">
+            <h2>Let's personalize your experience</h2>
+            <form id="onboarding-form">
+                <div class="form-group">
+                    <label for="current-role">Current Role</label>
+                    <input type="text" id="current-role" placeholder="e.g. Student, Junior Dev" required>
+                </div>
+                <div class="form-group">
+                    <label for="target-role">Target Role</label>
+                    <input type="text" id="target-role" placeholder="e.g. ML Engineer, Product Manager" required>
+                </div>
+                <button type="submit" class="btn-primary full-width">Continue <i class="fa-solid fa-check"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard (Hidden initially) -->
+    <div id="dashboard-page" class="app-container page" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-mark">
+                <i class="fa-solid fa-shapes"></i>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" title="Dashboard">
+                    <i class="fa-regular fa-compass"></i>
+                </a>
+                <a href="#" class="nav-item" title="Courses">
+                    <i class="fa-regular fa-circle-play"></i>
+                </a>
+                <a href="#" class="nav-item" title="Messages">
+                    <i class="fa-regular fa-message"></i>
+                </a>
+                <a href="#" class="nav-item" title="Resources">
+                    <i class="fa-regular fa-folder-open"></i>
+                </a>
+                <a href="#" class="nav-item" title="Settings">
+                    <i class="fa-solid fa-gear"></i>
+                </a>
+            </nav>
+            <div class="user-profile-mini">
+                <div class="avatar-circle">
+                    <img src="https://ui-avatars.com/api/?name=Annette+Black&background=6366f1&color=fff" alt="User">
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-layer-group"></i> CareerOS
+                </div>
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Explore Courses">
+                    <i class="fa-solid fa-xmark clear-icon"></i>
+                </div>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <div class="avatar-small">
+                            <img src="https://ui-avatars.com/api/?name=Annette+Black&background=6366f1&color=fff"
+                                alt="User">
+                        </div>
+                        <span>Annette Black</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+                    <button class="icon-btn"><i class="fa-solid fa-gear"></i></button>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- Hero Section -->
+                <section class="hero-section">
+                    <h1>Plan the path.<br>Master the interview.</h1>
+                    <p>Your AI-powered career and interview coach to unlock your dream job</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary">Get Started</button>
+                        <button class="btn-secondary"><i class="fa-regular fa-circle-play"></i> Watch Demo</button>
+                    </div>
+                </section>
+
+                <!-- Cards Grid -->
+                <div class="content-cards">
+                    <!-- Career Goals -->
+                    <div class="card career-goals">
+                        <div class="card-header">
+                            <h3>Career Goals <i class="fa-solid fa-chevron-right"></i></h3>
+                        </div>
+                        <p class="sub-text">Welcome back, Annette</p>
+
+                        <div class="goal-content">
+                            <div class="goal-info">
+                                <h2 id="display-target-role">ML Engineer</h2>
+                                <p class="skills-list">Skill Gaps: Feature Engineering, Model Deployment, SQL
+                                    Optimization</p>
+                            </div>
+                            <div class="progress-circle">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg" d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="circle" stroke-dasharray="42, 100" d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <text x="18" y="20.35" class="percentage">42%</text>
+                                    <text x="18" y="26" class="percentage-label">Ready</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button class="btn-outline">View Roadmap</button>
+                            <span class="learn-roadmap">Learn roadmap</span>
+                        </div>
+                    </div>
+
+                    <!-- Mock Interview -->
+                    <div class="card mock-interview">
+                        <div class="card-header">
+                            <h3>Mock Interview</h3>
+                            <div class="card-actions">
+                                <span class="dot-menu">•••</span>
+                            </div>
+                        </div>
+                        <div class="video-preview">
+                            <div class="play-overlay">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                            <!-- Placeholder for video thumbnail since generation failed -->
+                            <div class="video-placeholder"
+                                style="background: #ddd; width: 100%; height: 100%; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #666;">
+                                <i class="fa-solid fa-image" style="font-size: 2rem;"></i>
+                            </div>
+                            <div class="video-controls">
+                                <div class="progress-bar">
+                                    <div class="fill" style="width: 40%"></div>
+                                </div>
+                                <span class="time">1:04</span>
+                            </div>
+                        </div>
+                        <div class="confidence-metrics">
+                            <div class="metric-main">
+                                <span class="label">Confidence</span>
+                                <span class="value">68%</span>
+                            </div>
+                            <div class="mini-metrics">
+                                <div class="mini-metric">83%</div>
+                                <div class="mini-metric">57%</div>
+                            </div>
+                        </div>
+                        <div class="qualitative-metrics">
+                            <span>Eye Contact <i class="fa-solid fa-plus tiny"></i></span>
+                            <span>Speech Pace <i class="fa-solid fa-pause tiny"></i></span>
+                            <span>Filler Words 7</span>
+                        </div>
+                        <button class="btn-green-block"><i class="fa-solid fa-play"></i> Start Practice</button>
+                    </div>
+
+                    <!-- Trending Skills -->
+                    <div class="card trending-skills">
+                        <div class="card-header">
+                            <h3>Trending Skills</h3>
+                            <i class="fa-solid fa-toggle-on toggle-icon"></i>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Sorting & Filtering Data with SQL</h4>
+                            <div class="skill-meta">
+                                <span class="stars">★ 10.5K students</span>
+                                <span class="avatars">
+                                    <img src="https://ui-avatars.com/api/?name=A&background=random" class="tiny-avatar">
+                                    <img src="https://ui-avatars.com/api/?name=B&background=random" class="tiny-avatar">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Introduction to Machine Learning</h4>
+                            <div class="skill-meta">
+                                <span class="stars">★ 12K students</span>
+                                <span class="avatars">
+                                    <img src="https://ui-avatars.com/api/?name=C&background=random" class="tiny-avatar">
+                                    <img src="https://ui-avatars.com/api/?name=D&background=random" class="tiny-avatar">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skill Navigator (Small Card) -->
+                    <div class="card skill-navigator">
+                        <div class="navigator-content">
+                            <img src="https://ui-avatars.com/api/?name=Instructor&background=random" class="nav-avatar">
+                            <div class="nav-text">
+                                <h4>Skill Navigator</h4>
+                                <span class="rating">★ 4.9 10.2k min 2,886</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Right Panel -->
+        <aside class="right-panel">
+            <div class="section-title">
+                <h3>Progress & Levels</h3>
+            </div>
+
+            <div class="level-card active">
+                <div class="level-header">
+                    <span class="icon">🐍</span>
+                    <span class="level-name">Python Apprentice</span>
+                    <span class="xp">0/100 XP</span>
+                </div>
+                <div class="xp-bar">
+                    <div class="fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="level-card">
+                <div class="level-header">
+                    <span class="icon">🚀</span>
+                    <span class="level-name">ML Explorer</span>
+                    <span class="xp">225/350 XP</span>
+                </div>
+                <div class="xp-bar warning">
+                    <div class="fill" style="width: 65%"></div>
+                </div>
+                <div class="level-stats">
+                    <span>Quiz Passes <strong>3</strong></span>
+                    <span>⚡ 68% 68%</span>
+                </div>
+            </div>
+
+            <div class="section-title mt-large">
+                <h3>Mock Interview</h3>
+                <div class="actions">
+                    <span class="dot">●</span> <span class="dot">●</span>
+                </div>
+            </div>
+
+            <div class="level-card disabled">
+                <div class="level-header">
+                    <span class="icon">📦</span>
+                    <span class="level-name">Model Builder</span>
+                    <span class="xp">350/600 XP</span>
+                </div>
+                <div class="xp-bar">
+                    <div class="fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="level-card disabled">
+                <div class="level-header">
+                    <span class="icon">🏗️</span>
+                    <span class="level-name">Deployment Architect</span>
+                    <span class="xp">600/900 XP</span>
+                </div>
+                <div class="xp-bar">
+                    <div class="fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="level-card locked">
+                <div class="level-header">
+                    <span class="icon">✔</span>
+                    <span class="level-name">Interview Ready Pro</span>
+                    <span class="xp">Locked</span>
+                </div>
+            </div>
+
+            <div class="quiz-summary">
+                <div class="summary-row">
+                    <span>Quiz Passes 3</span>
+                    <span>👍 Mock Scores 2</span>
+                </div>
+                <div class="xp-bar success">
+                    <div class="fill" style="width: 80%"></div>
+                </div>
+                <div class="confidence-stat">Confidence 68%</div>
+
+                <div class="leaderboard-mini">
+                    <img src="https://ui-avatars.com/api/?name=Annette&background=6366f1&color=fff" class="mini-avatar">
+                    <div class="leader-text">
+                        <span>Annette Black</span>
+                        <small>125K students</small>
+                    </div>
+                    <span class="rank">125 std</span>
+                </div>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- Logic for Flow -->
+    <script src="script.js"></script>
+    <script src="particles.js"></script>
+</body>
+
+</html>
