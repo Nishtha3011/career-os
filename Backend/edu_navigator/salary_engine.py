@@ -1,7 +1,13 @@
 def estimate_salary(readiness):
-    if readiness < 40:
-        return "₹3–5 LPA (Fresher)"
-    elif readiness < 70:
-        return "₹6–10 LPA (Junior Level)"
+
+    if readiness < 30:
+        return "3-5 LPA (Entry Level)"
+
+    elif readiness < 60:
+        return "6-9 LPA (Junior Level)"
+
+    elif readiness < 80:
+        return "10-14 LPA (Mid Level)"
+
     else:
-        return "₹12+ LPA (Interview Ready)"
+        return "15+ LPA (Interview Ready)"

@@ -1,14 +1,15 @@
-from .skill_data import LEARNING_RESOURCES
-
 def generate_roadmap(missing_skills):
-    roadmap = {}
 
-    for i, skill in enumerate(missing_skills[:4]):
+    roadmap = {}
+    learning_resources = {}
+
+    for i, skill in enumerate(missing_skills[:4]):  # top 4 missing
         roadmap[f"Week {i+1}"] = skill
 
-    learning_plan = {
-        skill: LEARNING_RESOURCES.get(skill, ["Resource not available"])
-        for skill in missing_skills[:4]
-    }
+        learning_resources[skill] = [
+            f"Official Documentation for {skill}",
+            f"YouTube Advanced {skill} Tutorial",
+            f"Hands-on Project on {skill}"
+        ]
 
-    return roadmap, learning_plan
+    return roadmap, learning_resources

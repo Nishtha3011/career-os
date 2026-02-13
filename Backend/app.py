@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import Dict
 
 from edu_navigator.trend_engine import get_market_demand
 from edu_navigator.gap_engine import calculate_gap
@@ -10,40 +10,24 @@ from edu_navigator.salary_engine import estimate_salary
 app = FastAPI(title="CareerOS - Edu Navigator")
 
 
-# -------- REQUEST MODEL --------
-class UserInput(BaseModel):
-    user_skills: List[str]
+class AnalyzeRequest(BaseModel):
+    user_skills: Dict[str, float]
     target_role: str
 
 
-# -------- RESPONSE MODEL --------
-class AnalyzeResponse(BaseModel):
-    readiness_percent: str
-    confidence_score: float
-    career_level: str
-    progress_color: str
-    top_missing_skills: List[str]
-    market_demand_trend: Dict[str, float]
-    weekly_roadmap: Dict[str, str]
-    estimated_salary_band: str
-
-
-# -------- HOME ENDPOINT --------
 @app.get("/")
 def home():
     return {"message": "Edu Navigator Running 🚀"}
 
 
-# -------- ROLE SKILL DEMAND --------
-@app.get("/role-skills/{role}")
-def role_skills(role: str):
-    return get_market_demand(role)
+@app.post("/analyze")
+def analyze(data: AnalyzeRequest):
 
+    result = calculate_gap(data.user_skills, data.target_role)
 
-# -------- MAIN ANALYZE ENDPOINT --------
-@app.post("/analyze", response_model=AnalyzeResponse)
-def analyze(data: UserInput):
-    readiness, missing = calculate_gap(data.user_skills, data.target_role)
+    readiness = result["readiness_score"]
+    missing = result["missing_skills"]
+
     roadmap, learning = generate_roadmap(missing)
     salary = estimate_salary(readiness)
 
@@ -55,17 +39,19 @@ def analyze(data: UserInput):
         else "green"
     )
 
+    career_level = (
+        "Beginner" if readiness < 40
+        else "Intermediate" if readiness < 70
+        else "Interview Ready"
+    )
+
     return {
         "readiness_percent": f"{readiness}%",
         "confidence_score": confidence,
-        "career_level": (
-            "Beginner" if readiness < 40
-            else "Intermediate" if readiness < 70
-            else "Interview Ready"
-        ),
+        "career_level": career_level,
         "progress_color": progress_color,
         "top_missing_skills": missing[:3],
-        "market_demand_trend": get_market_demand(data.target_role),
         "weekly_roadmap": roadmap,
+        "learning_resources": learning,
         "estimated_salary_band": salary
     }

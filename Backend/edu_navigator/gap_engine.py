@@ -1,43 +1,58 @@
-import math
-from .skill_data import ROLE_SKILLS
+import os
+import joblib
+import numpy as np
+from .skill_data import ROLE_SKILLS, LEARNING_RESOURCES
+
+# Load trained sklearn model
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "readiness_model.pkl")
+model = joblib.load(MODEL_PATH)
 
 
-def calculate_gap(user_skills, role):
-    role_skills = ROLE_SKILLS.get(role, {})
+def calculate_gap(user_skills: dict, target_role: str):
+    """
+    user_skills: {"Python": 0.8, "SQL": 0.6, "Docker": 0.5}
+    target_role: "ML Engineer"
+    """
 
-    if not role_skills:
-        return 0, []
+    if target_role not in ROLE_SKILLS:
+        raise ValueError("Invalid target role")
 
-    user_vector = []
-    role_vector = []
+    role_skills = ROLE_SKILLS[target_role]
+
+    matched_skills = []
     missing_skills = []
+    total_skills = len(role_skills)
 
-    # Build vectors
-    for skill, weight in role_skills.items():
-        role_vector.append(weight)
+    weighted_sum = 0
+    match_count = 0
 
-        if skill.lower() in [s.lower() for s in user_skills]:
-            user_vector.append(1)
+    for skill, required_weight in role_skills.items():
+        if skill in user_skills:
+            user_level = user_skills[skill]
+            match_count += 1
+            weighted_sum += min(user_level, required_weight)
+            matched_skills.append(skill)
         else:
-            user_vector.append(0)
-            missing_skills.append((skill, weight))
+            missing_skills.append(skill)
 
-    # Dot product
-    dot_product = sum(u * r for u, r in zip(user_vector, role_vector))
+    coverage_ratio = match_count / total_skills if total_skills > 0 else 0
+    avg_weight = (weighted_sum / match_count) if match_count > 0 else 0
 
-    # Magnitudes
-    user_magnitude = math.sqrt(sum(u ** 2 for u in user_vector))
-    role_magnitude = math.sqrt(sum(r ** 2 for r in role_vector))
+    # Predict readiness using sklearn model
+    X_new = np.array([[coverage_ratio, avg_weight]])
+    readiness = float(model.predict(X_new)[0])
 
-    # Avoid division by zero
-    if user_magnitude == 0 or role_magnitude == 0:
-        similarity = 0
-    else:
-        similarity = dot_product / (user_magnitude * role_magnitude)
+    # Learning resources for missing skills
+    learning_path = {}
+    for skill in missing_skills:
+        if skill in LEARNING_RESOURCES:
+            learning_path[skill] = LEARNING_RESOURCES[skill]
 
-    readiness_percent = round(similarity * 100, 2)
-
-    # Sort missing skills by importance
-    missing_skills.sort(key=lambda x: x[1], reverse=True)
-
-    return readiness_percent, [skill for skill, _ in missing_skills]
+    return {
+        "readiness_score": round(readiness, 2),
+        "coverage_ratio": round(coverage_ratio, 2),
+        "avg_weight": round(avg_weight, 2),
+        "matched_skills": matched_skills,
+        "missing_skills": missing_skills,
+        "learning_path": learning_path
+    }
